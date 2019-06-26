@@ -1,0 +1,9 @@
+.idea/*
+*__pycache__*
+.directory
+*.jpg
+
+model
+log
+result
+data
