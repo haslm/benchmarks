@@ -6,12 +6,11 @@ RUN apt-get update
 RUN apt-get install -y python3 
 
 # Install pip
-COPY docker_utils/* /
 RUN python3 /get-pip.py
 RUN pip install --upgrade pip
 
 #Install requirements
-RUN pip install -r /requirements.txt
+RUN pip install opencv-python
 
 RUN mkdir /project
 COPY ./* /project/
@@ -19,4 +18,3 @@ COPY ./* /project/
 WORKDIR /project
 
 CMD ["/bin/bash"]
-

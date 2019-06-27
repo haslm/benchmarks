@@ -30,9 +30,6 @@ def run( config: Config):
     errors = []
     errors_smoothed = []
     alarm = [False]
-
-    _thread.start_new_thread(helpers.pynamic_plot,(datas,pred,errors,thresh,config.l_s,alarm))
-
     while(True):
         data = get_next()
         data/=scale

@@ -1,3 +1,4 @@
 .vscode
 *.pyc
 *.log
+global_config.toml
