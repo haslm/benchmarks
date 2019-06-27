@@ -2,16 +2,16 @@ title = "Global configrations"
 
 [cloud]
 # just support single cloud current
-ip = "222.29.97.168"
-username = "zhou"
-password = "ceca"
-port = "369"
+ip = "xxx.xxx.xxx.xxx"
+username = "xx"
+password = "xx"
+port = "22"
 
 [edges]
 number = 1
 info = [
     # ip, username, password, port 
-    ["222.29.97.92", "zhou","ceca","22"]
+    ["xxx.xxx.xxx.xxx", "xx","xx","22"]
 ]
 
 #[iot]
