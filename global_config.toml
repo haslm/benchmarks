@@ -2,11 +2,10 @@ title = "Global configrations"
 
 [cloud]
 # just support single cloud current
-ip = "xxx.xxx.xxx.xxx"
-username = "xxx"
-password = "xxx"
-port = 22
-
+info = [
+     # ip, username, password, port
+    ["xxx.xxx.xxx.xxx", "xxx","xxx","22"]
+]
 
 [edges]
 info = [
