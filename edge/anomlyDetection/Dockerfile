@@ -8,7 +8,7 @@ RUN apt-get install -y python3
 # Install pip
 COPY docker_utils/* /
 RUN python3 /get-pip.py
-RUN pip install --upgrade pip
+# RUN pip install --upgrade pip
 
 #Install requirements
 RUN pip install -r /requirements.txt

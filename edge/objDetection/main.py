@@ -1,23 +1,28 @@
 import cv2
-
-def get_rtsp_video_path():
-    return "rtsp://222.29.97.89/stream/"
+import threading
+import argparse
+import logging
 
 def report(image, boxes):
-    print (boxes)
+    print (len(boxes))
 
-def detect():
-    history = 20
+def detect(stream, history):
+    logging.basicConfig(level=logging.DEBUG,
+        filename = stream.split('/')[-2]+'.log',
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    logger = logging.getLogger(__name__)
+    logger.info("Staring")
+
     frames = 0
-
-    rstp_video = get_rtsp_video_path()
-    cap = cv2.VideoCapture(rstp_video)
+    cap = cv2.VideoCapture(stream)
     if not cap.isOpened():
-        print("Can't open rtsp stream! please check the rtsp stream provision")
+        logger.error("Can't open rtsp stream! please check the rtsp stream provision")
+        return
     else:
-        print("Receving rtsp stream ")
+        logger.info("Receving rstp stream")
+    logger.info("Start object detection, using algorithm KNN, history length: %d"%(history))
 
-    print("Start object detection, using algorithm KNN, history length: ",str(history))
     bs = cv2.createBackgroundSubtractorKNN(detectShadows = True)
     bs.setHistory(history)
     while cap.isOpened():
@@ -42,9 +47,32 @@ def detect():
         if(len(boxes) > 0):
             report(frame, boxes)
 
-if __name__ == "__main__":
-    detect()
+class threadDectector(threading.Thread):
+    def __init__(self, stream, history):
+        threading.Thread.__init__(self)
+        self.stream = stream #rtsp stream
+        self.history = history #the history length to perform background modeling 
+    def run(self):
+        detect(self.stream, self.history)
 
+def main(args):
+    streams = args.input_streams
+    streams = streams.split(',')
+    threads = []
+    history = 20
+    for stream in streams:
+        thread = threadDectector(stream, history)
+        thread.start()
+        threads.append(thread)
+    #wait for all threads to finish
+    for thread in threads:
+        thread.join()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-i","--input_streams", type = str, help = "input rtsp streams")
+    args = parser.parse_args()
+    main(args)
 
 
     
