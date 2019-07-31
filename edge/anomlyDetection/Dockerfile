@@ -11,7 +11,7 @@ RUN python3 /get-pip.py
 # RUN pip install --upgrade pip
 
 #Install requirements
-RUN pip install -r /requirements.txt
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple  -r /requirements.txt
 
 RUN mkdir /project
 COPY ./* /project/

@@ -16,7 +16,8 @@ def initialize(args):
 def run_objDetection(args):
     #Install EasyDarwin
     #TODO
-   
+    #cmd = "git clone https://github.com/EasyDarwin/EasyDarwin.git"
+    #global_manager.broadcast(cmd, global_manager.iot_managers, sync = True)
     """
     setup docker environment on edge nodes
     """
@@ -35,7 +36,7 @@ def run_objDetection(args):
     #push rtsp in iot devices
     test_video = "test.mp4"
     rtsp_address = "rtsp://127.0.0.1/stream"
-    cmd = "ffmpeg -re -i %s -vcodec copy -codec copy -rtsp_transport tcp -f rtsp %s"%(test_video, rtsp_address)
+    cmd = "ffmpeg -re -stream_loop -1  -i  %s -vcodec copy -codec copy -rtsp_transport tcp -f rtsp %s"%(test_video, rtsp_address)
     threads = global_manager.broadcast(cmd, global_manager.iot_managers,sync =False)
     all_streams = ""
     for edge_manager in global_manager.edge_managers:

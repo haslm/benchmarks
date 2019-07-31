@@ -2,6 +2,8 @@ import cv2
 import threading
 import argparse
 import logging
+import time
+from matplotlib import pyplot as plt
 
 def report(image, boxes):
     print (len(boxes))
@@ -25,8 +27,16 @@ def detect(stream, history):
 
     bs = cv2.createBackgroundSubtractorKNN(detectShadows = True)
     bs.setHistory(history)
+
+
+    frame_tag = 0
+    time_stamp = time.time()
+
+    frame_log = []
+
     while cap.isOpened():
         success, frame = cap.read()
+
         if not success:
             break
         fg_mask = bs.apply(frame) # get foreground mask
@@ -44,8 +54,21 @@ def detect(stream, history):
             # get axises of detected boxes
             x, y, w, h = cv2.boundingRect(c)
             boxes.append([x, y, w, h])
-        if(len(boxes) > 0):
-            report(frame, boxes)
+        
+        frame_tag += 1
+        if(frame_tag == 20):
+            now = time.time()
+            fps = 20/(now-time_stamp)
+            time_stamp = now    
+            frame_tag = 0
+            frame_log.append(fps)
+            print(fps)
+
+    x = range(len(frame_log))
+    plt.plot(x,frame_log)
+    plt.savefig('./objectDetection.png')
+        # if(len(boxes) > 0):
+        #     report(frame, boxes)
 
 class threadDectector(threading.Thread):
     def __init__(self, stream, history):
